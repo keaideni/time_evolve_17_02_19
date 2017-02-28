@@ -5,7 +5,8 @@ using namespace std;
 
 
 Evolution::Evolution(const MatrixXd& H1, const MatrixXd& H2, const double& t):
-_eigenstate(H1)
+_eigenstate(H1),
+_eigenstateend(H2)
 {
         SelfAdjointEigenSolver<MatrixXd> tepOP(H2);
 
@@ -15,7 +16,7 @@ _eigenstate(H1)
         int n=tepOP.eigenvalues().size();
         VectorXcd timeOP(n);
 
-        for(int i=0; i<n; ++i)timeOP[i]=std::complex<double>(sin(-tepOP.eigenvalues()[i]*t),cos(-tepOP.eigenvalues()[i]*t));
+        for(int i=0; i<n; ++i)timeOP[i]=std::complex<double>(cos(-tepOP.eigenvalues()[i]*t),sin(-tepOP.eigenvalues()[i]*t));
 
         MatrixXcd E=timeOP.asDiagonal();
 
@@ -25,7 +26,11 @@ _eigenstate(H1)
         //cout<<timeOP<<endl;
         //cout<<"the diagonal:"<<endl;
         //cout<<E<<endl;
-
+        
+        //cout<<tepOP.eigenvectors()*tepOP.eigenvectors().inverse()<<endl;;
         _tOP=tepOP.eigenvectors()*E*tepOP.eigenvectors().inverse();
-        cout<<_tOP<<endl;
+        //cout<<_tOP<<endl;
+        for(int i=0; i<n; ++i)timeOP[i]=std::complex<double>(1,0);
+        _t0OP=timeOP.asDiagonal();
+        
 }

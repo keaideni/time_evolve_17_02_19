@@ -24,7 +24,7 @@ LIBSPECTRA = -I/media/xuejian/WORK/spectra/spectra-0.2.0/spectra-0.2.0/include/ 
 obj=main.o Parameter.o JC_Parameter.o OP.o Hamiltanian.o Evolution.o#Sub.o QWave.o Super.o DMRGP.o Corr.o
 tevolve:$(obj)
 	$(CCCOM) -o tevolve $(obj)  $(LIBSPECTRA)
-main.o:main.cpp com.h
+main.o:main.cpp com.h CalQ.h
 	$(CCCOM) -c main.cpp $(LIBSPECTRA)
 Parameter.o:Parameter.cpp Parameter.h
 	$(CCCOM) -c Parameter.cpp $(LIBSPECTRA)

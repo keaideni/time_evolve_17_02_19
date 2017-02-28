@@ -2,11 +2,11 @@
 
 #mkdir Corr
 mkdir data
-#mkdir result
+mkdir result
 
 cat > data/QNosave.txt <<EOF
-LatticeSize= 4
-ParticleNo= 2
+LatticeSize= 10
+ParticleNo= 5
 SiteNo= 2
 DeltaQL= 2
 DeltaQR= 3

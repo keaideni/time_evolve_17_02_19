@@ -45,6 +45,7 @@ public:
 
 //=============================function==================================
         void kron(const Hamiltanian& HL, const Hamiltanian& HR, const double& coup);
+        void final(const double& coup);
         void clear();
 
         void operator=(const Hamiltanian& H);

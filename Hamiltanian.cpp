@@ -82,6 +82,19 @@ void Hamiltanian::kron(const Hamiltanian& HL, const Hamiltanian& HR, const doubl
 
 
 
+void Hamiltanian::final(const double& coup)
+{
+        OP systemp;
+        systemp.time(_SysCDagL, _SysCR);
+        systemp.time(coup);
+        _System.add(systemp);
+
+        systemp.time(_SysCL, _SysCDagR);
+        systemp.time(coup);
+        _System.add(systemp);
+}
+
+
 void Hamiltanian::clear()
 {
         _System.clear();

@@ -15,7 +15,10 @@ public:
         ~Evolution(){};
 
         SelfAdjointEigenSolver<MatrixXd> _eigenstate;
+        SelfAdjointEigenSolver<MatrixXd> _eigenstateend;
         MatrixXcd _tOP;
+
+        MatrixXcd _t0OP;//used for the initial wave, make it complex.
 
 
 
