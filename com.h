@@ -76,13 +76,15 @@ void com(const JC_Parameter&para)
         //===========energy===================
         energyout<<(a.adjoint()*H2*a).real()<<endl;
 
+        //cout<<tevo._tOP.adjoint()*H2*tevo._tOP<<endl<<H2<<endl;
+
 
         CalParNo(Qubit, Resonator, para, a, qubitout, resonatorout);
 
         calEnt(Qubit, Resonator, para, a, entout);
 //==================================================================================================
 
-        for(double t=1; t<100; t+=1)
+        for(double t=1; t<10; t+=1)
         {
                 
                 //cout<<tevo._tOP<<endl;
@@ -97,7 +99,7 @@ void com(const JC_Parameter&para)
 //=========================================================================
 
                 //===========energy===================
-                energyout<<(a.adjoint()*H2*a).real()<<endl;
+                energyout<<abs((a.adjoint()*H2*a)(0,0))<<endl;
 
 
                 CalParNo(Qubit, Resonator, para, a, qubitout, resonatorout);

@@ -16,10 +16,10 @@ _eigenstateend(H2)
         int n=tepOP.eigenvalues().size();
         VectorXcd timeOP(n);
 
-        for(int i=0; i<n; ++i)timeOP[i]=std::complex<double>(cos(-tepOP.eigenvalues()[i]*t),sin(-tepOP.eigenvalues()[i]*t));
+        for(int i=0; i<n; ++i)timeOP[i]=std::complex<double>(cos(tepOP.eigenvalues()(i)*t),-1*sin(tepOP.eigenvalues()(i)*t));
 
         MatrixXcd E=timeOP.asDiagonal();
-
+        //cout<<E.adjoint()*E<<endl;
         //cout<<"the real:"<<endl;
         //cout<<tepOP.eigenvalues()<<endl;
         //cout<<"the complex"<<endl;
@@ -28,7 +28,7 @@ _eigenstateend(H2)
         //cout<<E<<endl;
         
         //cout<<tepOP.eigenvectors()*tepOP.eigenvectors().inverse()<<endl;;
-        _tOP=tepOP.eigenvectors()*E*tepOP.eigenvectors().inverse();
+        _tOP=tepOP.eigenvectors()*E*tepOP.eigenvectors().adjoint();
         //cout<<_tOP<<endl;
         for(int i=0; i<n; ++i)timeOP[i]=std::complex<double>(1,0);
         _t0OP=timeOP.asDiagonal();
