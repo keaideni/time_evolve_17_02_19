@@ -4,19 +4,19 @@
 using namespace std;
 
 
+
 Evolution::Evolution(const MatrixXd& H1, const MatrixXd& H2, const double& t):
-_eigenstate(H1),
-_eigenstateend(H2)
+_tepOP(H2)
 {
-        SelfAdjointEigenSolver<MatrixXd> tepOP(H2);
+        
 
         //cout<<eigenstate.eigenvalues().size()<<endl;
         //cout<<tepOP.eigenvalues().size()<<endl;
 
-        int n=tepOP.eigenvalues().size();
+        int n=_tepOP.eigenvalues().size();
         VectorXcd timeOP(n);
 
-        for(int i=0; i<n; ++i)timeOP[i]=std::complex<double>(cos(tepOP.eigenvalues()(i)*t),-1*sin(tepOP.eigenvalues()(i)*t));
+        for(int i=0; i<n; ++i)timeOP[i]=std::complex<double>(cos(_tepOP.eigenvalues()(i)*t),-1*sin(_tepOP.eigenvalues()(i)*t));
 
         MatrixXcd E=timeOP.asDiagonal();
         //cout<<E.adjoint()*E<<endl;
@@ -28,9 +28,22 @@ _eigenstateend(H2)
         //cout<<E<<endl;
         
         //cout<<tepOP.eigenvectors()*tepOP.eigenvectors().inverse()<<endl;;
-        _tOP=tepOP.eigenvectors()*E*tepOP.eigenvectors().adjoint();
+        _tOP=_tepOP.eigenvectors()*E*_tepOP.eigenvectors().adjoint();
         //cout<<_tOP<<endl;
         for(int i=0; i<n; ++i)timeOP[i]=std::complex<double>(1,0);
-        _t0OP=timeOP.asDiagonal();
+        _t0OP=(timeOP.asDiagonal());
+
+        
+
+
+//===========calculation of the initial state===============================
+        DenseSymMatProd<double> op(H1);
+        SymEigsSolver< double, SMALLEST_ALGE, DenseSymMatProd<double> > eigs(&op, 1, 6);
+        eigs.init();
+        eigs.compute();
+
+        //if(eigs.info() == SUCCESSFUL)
+        _eigenstate = eigs.eigenvectors().col(0);
+
         
 }

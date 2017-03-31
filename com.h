@@ -1,6 +1,7 @@
 #include <iostream>
 #include <complex>
 #include <Eigen/Dense>
+#include "Mat.h"
 #include "OP.h"
 #include "JC_Parameter.h"
 #include "Hamiltanian.h"
@@ -12,40 +13,12 @@ using namespace Eigen;
 void com(const JC_Parameter&para)
 {
         
-        Hamiltanian Qubit(qubit, para);
-        Hamiltanian Resonator(resonator, para);
+        Mat H1(para, para.gl(), para.gr());
+        Mat H2(para, para.gr(), para.gl());
 
-        Hamiltanian Ham1(Qubit), Ham2;
 
-        
 
-        for(int i=1; i<para.LatticeSize(); ++i)
-        {
-                if(i%2==0)
-                        Ham2.kron(Ham1, Qubit, para.gl());
-                else
-                        Ham2.kron(Ham1, Resonator, para.gr());
-                Ham1=Ham2;
-        }
-        Ham1.final(para.gl());
 
-        MatrixXd H1=Ham1.System().QMat()->at(para.ParticleNo());
-
-        //cout<<H1.rows()<<"x"<<H1.cols()<<endl;
-
-        Ham1=Qubit;
-        for(int i=1; i<para.LatticeSize(); ++i)
-        {
-                if(i%2==0)
-                        Ham2.kron(Ham1, Qubit, para.gr());
-                else
-                        Ham2.kron(Ham1, Resonator, para.gl());
-
-                Ham1=Ham2;
-        }
-        Ham1.final(para.gr());
-
-        MatrixXd H2=Ham1.System().QMat()->at(para.ParticleNo());
         //cout<<"first"<<endl;
         //cout<<H2.rows()<<"x"<<H2.cols()<<endl;
 
@@ -55,11 +28,11 @@ void com(const JC_Parameter&para)
         ofstream energyout("./result/energy");
 
 
-        Evolution tevo(H1, H2, 1);
+        Evolution tevo(H1.MatH(), H2.MatH(), 1);
 
 
 
-        VectorXcd a=tevo._t0OP*tevo._eigenstate.eigenvectors().col(0);
+        VectorXcd a=tevo._t0OP*tevo._eigenstate;
 
         VectorXcd b;
 
@@ -69,14 +42,17 @@ void com(const JC_Parameter&para)
 
         //=====================for the difference between waves====================
                 
-        difout<<abs((a.adjoint()*tevo._eigenstate.eigenvectors().col(0))(0,0))
-        <<"\t"<<abs((a.adjoint()*tevo._eigenstateend.eigenvectors().col(0))(0,0))<<endl;
+        difout<<abs((a.adjoint()*tevo._eigenstate)(0,0))
+        <<"\t"<<abs((a.adjoint()*tevo._tepOP.eigenvectors().col(0))(0,0))<<endl;
         //=========================================================================
 
         //===========energy===================
-        energyout<<(a.adjoint()*H2*a).real()<<endl;
+        energyout<<(a.adjoint()*H2.MatH()*a).real()<<endl;
 
         //cout<<tevo._tOP.adjoint()*H2*tevo._tOP<<endl<<H2<<endl;
+
+        Hamiltanian Qubit(qubit, para);
+        Hamiltanian Resonator(resonator, para);
 
 
         CalParNo(Qubit, Resonator, para, a, qubitout, resonatorout);
@@ -84,7 +60,7 @@ void com(const JC_Parameter&para)
         calEnt(Qubit, Resonator, para, a, entout);
 //==================================================================================================
 
-        for(double t=1; t<10; t+=1)
+        for(double t=1; t<1000; t+=1)
         {
                 
                 //cout<<tevo._tOP<<endl;
@@ -94,12 +70,12 @@ void com(const JC_Parameter&para)
                  a=b;
 //=====================for the difference between waves====================
                 
-                difout<<abs((a.adjoint()*tevo._eigenstate.eigenvectors().col(0))(0,0))
-                <<"\t"<<abs((a.adjoint()*tevo._eigenstateend.eigenvectors().col(0))(0,0))<<endl;
+                difout<<abs((a.adjoint()*tevo._eigenstate)(0,0))
+                <<"\t"<<abs((a.adjoint()*tevo._tepOP.eigenvectors().col(0))(0,0))<<endl;
 //=========================================================================
 
                 //===========energy===================
-                energyout<<abs((a.adjoint()*H2*a)(0,0))<<endl;
+                energyout<<abs((a.adjoint()*H2.MatH()*a)(0,0))<<endl;
 
 
                 CalParNo(Qubit, Resonator, para, a, qubitout, resonatorout);
