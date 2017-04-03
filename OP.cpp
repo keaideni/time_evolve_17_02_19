@@ -544,7 +544,7 @@ void OP::time(const OP& a, const OP& b)
 
 
 
-OP OP::operator*(const OP& a)
+OP OP::operator*(const OP& a)const
 {
         OP Product;
         if (a._QDim.size() != _QDim.size())
@@ -784,9 +784,9 @@ void OP::Waveinitial(const OP& SysEye, const OP& EnvEye, const int& partiNo)
 {
         clear();
 
-        for(auto QL=SysEye.QDim()->begin(); QL!=SysEye.QDim()->end(); ++QL)
+        for(auto QL=SysEye.QDim().begin(); QL!=SysEye.QDim().end(); ++QL)
         {
-                for(auto QR=EnvEye.QDim()->begin(); QR!=EnvEye.QDim()->end(); ++QR)
+                for(auto QR=EnvEye.QDim().begin(); QR!=EnvEye.QDim().end(); ++QR)
                         {
                             //std::cout<<QR->first<<", "<<QL->first<<std::endl;
                                 if(QL->first+QR->first==partiNo)
@@ -832,15 +832,15 @@ int OP::rtime(const OP& wave, const OP& b)
 
         int flag(0);
 
-        for (auto ita = b.QMat()->begin(); ita != b.QMat()->end(); ita++)
+        for (auto ita = b.QMat().begin(); ita != b.QMat().end(); ita++)
         {
-                for (auto itQ = wave.RLQ()->begin(); itQ != wave.RLQ()->end(); itQ++)
+                for (auto itQ = wave.RLQ().begin(); itQ != wave.RLQ().end(); itQ++)
                 {
 
                         if (ita->first == itQ->first)
                         {
                                 flag++;
-                                int tempQ(b.RLQ()->at(ita->first));
+                                int tempQ(b.RLQ().at(ita->first));
                                 _RLQ[tempQ] = itQ->second;
                                 _QMat[tempQ] = (wave._QMat.at(itQ->first)) * ita->second.transpose();
 

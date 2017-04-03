@@ -15,16 +15,19 @@ using namespace Spectra;
 class Evolution
 {
 private:
-        
-public:
-        Evolution(){};
-        ~Evolution(){};
-
         VectorXd _eigenstate;
         SelfAdjointEigenSolver<MatrixXd> _tepOP;
         MatrixXcd _tOP;
 
         MatrixXcd _t0OP;//used for the initial wave, make it complex.
+public:
+        Evolution(){};
+        ~Evolution(){};
+
+        const VectorXd& eigenstate() const {return _eigenstate;};
+        const SelfAdjointEigenSolver<MatrixXd>& tepOP()const {return _tepOP;};
+        const MatrixXcd& tOP() const {return _tOP;};
+        const MatrixXcd& t0OP() const {return _t0OP;};
 
 
 

@@ -55,7 +55,7 @@ void com(const JC_Parameter&para)
         Hamiltanian Resonator(resonator, para);
 
 
-        CalParNo(Qubit, Resonator, para, a, qubitout, resonatorout);
+        CalParNo(Qubit, Resonator, para, a, qubitout, resonatorout, para);
 
         calEnt(Qubit, Resonator, para, a, entout);
 //==================================================================================================
@@ -78,7 +78,7 @@ void com(const JC_Parameter&para)
                 energyout<<abs((a.adjoint()*H2.MatH()*a)(0,0))<<endl;
 
 
-                CalParNo(Qubit, Resonator, para, a, qubitout, resonatorout);
+                CalParNo(Qubit, Resonator, para, a, qubitout, resonatorout, para);
 
                 calEnt(Qubit, Resonator, para, a, entout);
 

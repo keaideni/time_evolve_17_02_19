@@ -22,7 +22,7 @@ private:
 public:
         Mat(){};
         ~Mat(){};
-        MatrixXd MatH()const{return _MatH;};
+        const MatrixXd& MatH()const{return _MatH;};
         //VectorXd state()const{return _state;};
         //VectorXd Eigenvalues()const{return _Eigenvalues;};
 
@@ -59,7 +59,7 @@ public:
 
                 //_MatH.resize(rown, coln);
                 //Ham1.System().show();
-                _MatH=Ham1.System().QMat()->at(para.ParticleNo());
+                _MatH=Ham1.System().QMat().at(para.ParticleNo());
 
                 /*DenseSymMatProd<double> opmat(Ham1.System().QMat()->at(para.ParticleNo()));
 

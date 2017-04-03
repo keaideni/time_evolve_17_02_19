@@ -40,9 +40,9 @@ public:
         OP();
         ~OP();
 
-        const std::unordered_map<int, int>* QDim()const{return &_QDim;};
-        const std::unordered_map<int, int>* RLQ()const{return &_RLQ;};
-        const std::map<int, MatrixXd>* QMat()const{return &_QMat;};
+        const std::unordered_map<int, int>& QDim()const{return _QDim;};
+        const std::unordered_map<int, int>& RLQ()const{return _RLQ;};
+        const std::map<int, MatrixXd>& QMat()const{return _QMat;};
 
 
 //=======initialize the boson operator=========================
@@ -73,7 +73,7 @@ public:
 
         void time(const OP& a, const OP& b);
 
-        OP operator*(const OP& a);
+        OP operator*(const OP& a)const;
 
         void time(const double& x);
 
