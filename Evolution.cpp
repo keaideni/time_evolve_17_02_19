@@ -38,12 +38,12 @@ _tepOP(H2)
 
 //===========calculation of the initial state===============================
         DenseSymMatProd<double> op(H1);
-        SymEigsSolver< double, SMALLEST_ALGE, DenseSymMatProd<double> > eigs(&op, 1, 6);
+        SymEigsSolver< double, SMALLEST_ALGE, DenseSymMatProd<double> > eigs(&op, 2, 6);
         eigs.init();
         eigs.compute();
 
         //if(eigs.info() == SUCCESSFUL)
-        _eigenstate = eigs.eigenvectors().col(0);
+        _eigenstate = eigs.eigenvectors().col(1);//change here to change the evolve state.
 
         
 }
